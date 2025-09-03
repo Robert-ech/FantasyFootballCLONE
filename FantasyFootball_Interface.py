@@ -7,11 +7,10 @@ import platform
 import threading
 import time
 
-# Helper function for resource paths (works in dev and PyInstaller bundle)
+# Helper function for resource paths 
 def resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller"""
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
@@ -78,7 +77,6 @@ class AnimatedButton(tk.Button):
     """Enhanced button with hover animations and gradient-like effects"""
     
     def __init__(self, parent, **kwargs):
-        # Extract custom colors if provided
         self.normal_bg = kwargs.pop('normal_bg', '#3b82f6')
         self.hover_bg = kwargs.pop('hover_bg', '#2563eb')
         self.active_bg = kwargs.pop('active_bg', '#1d4ed8')
@@ -86,7 +84,7 @@ class AnimatedButton(tk.Button):
         # Default styling with dark text for readability
         default_style = {
             'bg': self.normal_bg,
-            'fg': 'black',  # Changed to black for readability
+            'fg': 'black', 
             'relief': 'flat',
             'font': ('Segoe UI', 10, 'bold'),
             'cursor': 'hand2',
@@ -95,14 +93,12 @@ class AnimatedButton(tk.Button):
             'pady': 8
         }
         
-        # Merge with provided kwargs
         for key, value in default_style.items():
             if key not in kwargs:
                 kwargs[key] = value
                 
         super().__init__(parent, **kwargs)
         
-        # Bind hover effects
         self.bind("<Enter>", self.on_hover)
         self.bind("<Leave>", self.on_leave)
         self.bind("<Button-1>", self.on_click)
@@ -150,7 +146,6 @@ class ModernEntry(tk.Entry):
                 
         super().__init__(parent, **kwargs)
         
-        # Add padding effect
         self.bind("<FocusIn>", self.on_focus_in)
         self.bind("<FocusOut>", self.on_focus_out)
     
@@ -167,7 +162,6 @@ class FantasyDraftApp:
         self.root.geometry("1400x900")
         self.root.minsize(1200, 800)
         
-        # Modern gradient background
         self.root.configure(bg="#0f172a")
         
         # Constants
@@ -181,7 +175,7 @@ class FantasyDraftApp:
 
         
         # Initialize data
-        from PLAYER_STATS import PLAYER_STATS   # import the dict from your other file
+        from PLAYER_STATS import PLAYER_STATS                              
 
         self.player_stats = {}
 
@@ -216,7 +210,6 @@ class FantasyDraftApp:
         self.setup_ui()
     
     def setup_ui(self):
-        # Modern title with glow effect
         title_frame = GradientFrame(self.root, relief='flat', bd=0)
         title_frame.pack(fill="x", pady=(20, 10))
         
@@ -238,7 +231,6 @@ class FantasyDraftApp:
         )
         subtitle_label.pack()
         
-        # Enhanced setup frame with cards
         setup_container = GradientFrame(self.root, color1='#1e293b', color2='#0f172a')
         setup_container.pack(fill="x", padx=30, pady=20)
         
@@ -280,7 +272,6 @@ class FantasyDraftApp:
         self.team_spinbox.delete(0, tk.END)
         self.team_spinbox.insert(0, "8")
         
-        # Enhanced buttons with custom styling
         button_frame = tk.Frame(left_card, bg="#374151")
         button_frame.pack(pady=10)
         
@@ -327,7 +318,7 @@ class FantasyDraftApp:
         )
         controls_title.pack(pady=(0, 10))
         
-        # Next pick with animated styling
+        # Next pick
         self.next_pick_label = tk.Label(
             right_card,
             text="⏰ Next Pick: —",
@@ -373,7 +364,6 @@ class FantasyDraftApp:
         )
         self.status_label.pack(pady=8)
         
-        # Enhanced draft board with modern styling
         board_container = GradientFrame(self.root, color1='#1f2937', color2='#111827', relief='raised', bd=3)
         board_container.pack(fill="both", expand=True, padx=30, pady=(0, 30))
         
@@ -389,14 +379,13 @@ class FantasyDraftApp:
         self.board_frame = tk.Frame(board_container, bg="#111827", relief="flat", bd=0)
         self.board_frame.pack(fill="both", expand=True, padx=20, pady=(0, 20))
         
-        # Use grid for better scaling control
+   
         self.board_frame.grid_rowconfigure(0, weight=1)
         self.board_frame.grid_columnconfigure(0, weight=1)
         
-        # Create scroll area for board with modern scrollbars
+        # Scrollbars
         self.canvas = tk.Canvas(self.board_frame, bg="#111827", highlightthickness=0)
         
-        # Custom styled scrollbars
         style = ttk.Style()
         style.theme_use('clam')
         style.configure("Custom.Vertical.TScrollbar", 
@@ -411,7 +400,6 @@ class FantasyDraftApp:
         self.scrollbar_h = ttk.Scrollbar(self.board_frame, orient="horizontal", command=self.canvas.xview, style="Custom.Horizontal.TScrollbar")
         self.scrollable_frame = tk.Frame(self.canvas, bg="#111827")
         
-        # Grid the canvas and scrollbars
         self.canvas.grid(row=0, column=0, sticky="nsew")
         self.scrollbar_v.grid(row=0, column=1, sticky="ns")
         self.scrollbar_h.grid(row=1, column=0, sticky="ew")
@@ -424,10 +412,8 @@ class FantasyDraftApp:
         self.canvas_frame = self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollbar_v.set, xscrollcommand=self.scrollbar_h.set)
         
-        # Bind canvas resize to update scrollable frame width
         self.canvas.bind("<Configure>", self.on_canvas_configure)
         
-        # Bind mousewheel to canvas
         self.canvas.bind("<MouseWheel>", self._on_mousewheel)
         self.canvas.bind("<Button-4>", self._on_mousewheel)
         self.canvas.bind("<Button-5>", self._on_mousewheel)
@@ -463,7 +449,6 @@ class FantasyDraftApp:
             
             self.n_teams = n_teams
             
-            # Enhanced team name dialog
             team_names = []
             for i in range(n_teams):
                 name = simpledialog.askstring(
@@ -496,7 +481,6 @@ class FantasyDraftApp:
         self.draft_labels = []
     
     def create_draft_board(self):
-        # Modern header row with gradient effect
         round_header = tk.Label(
             self.scrollable_frame,
             text="ROUND",
@@ -521,15 +505,13 @@ class FantasyDraftApp:
             )
             team_header.grid(row=0, column=col+1, sticky="nsew", padx=2, pady=2, ipady=8)
         
-        # Enhanced draft grid
         self.draft_labels = []
-        colors = ['#1f2937', '#111827']  # Alternating row colors
+        colors = ['#1f2937', '#111827']  
         
         for round_idx in range(self.ROUNDS):
             row_labels = []
             row_color = colors[round_idx % 2]
             
-            # Round number with enhanced styling
             round_label = tk.Label(
                 self.scrollable_frame,
                 text=str(round_idx + 1),
@@ -541,7 +523,7 @@ class FantasyDraftApp:
             )
             round_label.grid(row=round_idx+1, column=0, sticky="nsew", padx=2, pady=1, ipady=12)
             
-            # Team picks with modern styling
+            # Team picks
             for team_idx in range(self.n_teams):
                 label = tk.Label(
                     self.scrollable_frame,
@@ -626,7 +608,6 @@ class FantasyDraftApp:
         round_idx, team_idx = self.get_snake_pick_position(self.current_pick)
         self.draft_board[round_idx][team_idx] = player_name
         
-        # Enhanced label styling for picked players
         label = self.draft_labels[round_idx][team_idx]
         label.config(
             text=player_name,
@@ -726,7 +707,6 @@ class FantasyDraftApp:
         self.available_window.geometry("1400x800")
         self.available_window.configure(bg="#0f172a")
         
-        # Modern header
         header_frame = GradientFrame(self.available_window, color1='#374151', color2='#1f2937')
         header_frame.pack(fill="x", pady=(20, 10))
         
@@ -748,14 +728,12 @@ class FantasyDraftApp:
         )
         instructions.pack(pady=(0, 15))
         
-        # Enhanced treeview frame
         tree_container = GradientFrame(self.available_window, color1='#1f2937', color2='#111827', relief='raised', bd=2)
         tree_container.pack(fill="both", expand=True, padx=30, pady=(0, 20))
         
         tree_frame = tk.Frame(tree_container, bg="#1f2937")
         tree_frame.pack(fill="both", expand=True, padx=15, pady=15)
         
-        # Configure modern treeview style
         style = ttk.Style()
         style.configure("Available.Treeview", 
                        background="#374151",
@@ -768,7 +746,6 @@ class FantasyDraftApp:
                        foreground="#f9fafb",
                        font=("Segoe UI", 11, "bold"))
         
-        # Create treeview with all stats
         self.available_tree = ttk.Treeview(
             tree_frame, 
             columns=self.STAT_COLUMNS[1:], 
@@ -776,33 +753,27 @@ class FantasyDraftApp:
             style="Available.Treeview"
         )
         
-        # Configure column widths
         self.available_tree.column("#0", width=180, minwidth=150)
         for col in self.STAT_COLUMNS[1:]:
             self.available_tree.column(col, width=110, minwidth=90)
         
-        # Set headings with emojis
         self.available_tree.heading("#0", text="🏈 Player")
         heading_emojis = ["📈", "🎯", "🏃", "🙌", "💪", "🎯", "🏃", "🏆", "🙌", "🎯", "💥", "😬", "🎯", "💥","🏟️","🧍","📊","⚡","📅", "📅", "📅","💎" ]
         for i, col in enumerate(self.STAT_COLUMNS[1:]):
             emoji = heading_emojis[i] if i < len(heading_emojis) else "📊"
             self.available_tree.heading(col, text=f"{emoji} {col}")
         
-        # Modern scrollbars
         v_scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=self.available_tree.yview, style="Custom.Vertical.TScrollbar")
         h_scrollbar = ttk.Scrollbar(tree_frame, orient="horizontal", command=self.available_tree.xview, style="Custom.Horizontal.TScrollbar")
         self.available_tree.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
         
-        # Grid treeview and scrollbars
         self.available_tree.grid(row=0, column=0, sticky="nsew")
         v_scrollbar.grid(row=0, column=1, sticky="ns")
         h_scrollbar.grid(row=1, column=0, sticky="ew")
         
-        # Configure tree frame grid weights
         tree_frame.grid_rowconfigure(0, weight=1)
         tree_frame.grid_columnconfigure(0, weight=1)
         
-        # Bind double-click for drafting and editing
         self.available_tree.bind("<Double-Button-1>", self.available_tree_double_click)
         
         # Populate with available players and their stats
@@ -928,7 +899,6 @@ class FantasyDraftApp:
         self.stats_window.geometry("1200x700")
         self.stats_window.configure(bg="#0f172a")
         
-        # Modern header
         header_frame = GradientFrame(self.stats_window, color1='#374151', color2='#1f2937')
         header_frame.pack(fill="x", pady=(20, 15))
         
@@ -974,27 +944,25 @@ class FantasyDraftApp:
         )
         close_button.pack(side="right")
         
-        # Enhanced treeview frame
         tree_container = GradientFrame(self.stats_window, color1='#1f2937', color2='#111827', relief='raised', bd=2)
         tree_container.pack(fill="both", expand=True, padx=30, pady=(0, 30))
         
         tree_frame = tk.Frame(tree_container, bg="#1f2937")
         tree_frame.pack(fill="both", expand=True, padx=15, pady=15)
         
-        # Configure modern treeview style with larger fonts
         style = ttk.Style()
         style.configure("Modern.Treeview", 
                        background="#374151",
                        foreground="#f9fafb",
                        fieldbackground="#374151",
                        borderwidth=0,
-                       font=("Segoe UI", 12))  # Increased font size
+                       font=("Segoe UI", 12))  
         style.configure("Modern.Treeview.Heading",
                        background="#4b5563",
                        foreground="#f9fafb",
-                       font=("Segoe UI", 12, "bold"))  # Increased font size
+                       font=("Segoe UI", 12, "bold"))  
         
-        # Create treeview with all stats
+       
         self.available_tree = ttk.Treeview(
             tree_frame, 
             columns=self.STAT_COLUMNS[1:], 
@@ -1002,36 +970,36 @@ class FantasyDraftApp:
             style="Available.Treeview"
         )
         
-        # Configure column widths
+       
         self.available_tree.column("#0", width=200, minwidth=180)
         for col in self.STAT_COLUMNS[1:]:
             self.available_tree.column(col, width=120, minwidth=100)
         
-        # Set headings with emojis
+       
         self.available_tree.heading("#0", text="🏈 Player")
         heading_emojis = ["📈", "🎯", "🏃", "🙌", "💪", "🎯", "🏃", "🏆", "🙌", "🎯", "💥", "😬", "🎯", "💥"]
         for i, col in enumerate(self.STAT_COLUMNS[1:]):
             emoji = heading_emojis[i] if i < len(heading_emojis) else "📊"
             self.available_tree.heading(col, text=f"{emoji} {col}")
         
-        # Modern scrollbars
+      
         v_scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=self.available_tree.yview, style="Custom.Vertical.TScrollbar")
         h_scrollbar = ttk.Scrollbar(tree_frame, orient="horizontal", command=self.available_tree.xview, style="Custom.Horizontal.TScrollbar")
         self.available_tree.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
         
-        # Grid treeview and scrollbars
+       
         self.available_tree.grid(row=0, column=0, sticky="nsew")
         v_scrollbar.grid(row=0, column=1, sticky="ns")
         h_scrollbar.grid(row=1, column=0, sticky="ew")
         
-        # Configure tree frame grid weights
+        
         tree_frame.grid_rowconfigure(0, weight=1)
         tree_frame.grid_columnconfigure(0, weight=1)
         
-        # Bind double-click for drafting and editing
+     
         self.available_tree.bind("<Double-Button-1>", self.available_tree_double_click)
         
-        # Populate with available players and their stats
+     
         self.populate_available_stats()
         
         # Close button
@@ -1077,15 +1045,12 @@ class FantasyDraftApp:
 
 def main():
     root = tk.Tk()
-    
-    # Modern window styling
+
     try:
-        # Try to set modern window style on Windows
         root.tk.call('tk', 'scaling', 1.5)
     except:
         pass
-    
-    # Set window icon if available
+
     try:
         if platform.system() == "Windows":
             root.iconbitmap(default=resource_path("icon.ico"))
