@@ -289,3 +289,4 @@ with st.expander("🔧 Projection Model Hook (GBR)"):
     )
 
 st.caption("Tip: store public highlight URLs in `video_url`, or small demo clips in `/media`.")
+
