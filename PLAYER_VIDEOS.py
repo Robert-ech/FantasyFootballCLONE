@@ -243,7 +243,7 @@ PLAYER_VIDEOS = {
     'J.K. Scott': 'videos/J_K_Scott.mp4',
     'JC Latham': 'videos/JC_Latham.mp4',
     "Ja'Lynn Polk": 'videos/Ja_Lynn_Polk.mp4',
-    "Ja'Marr Chase": "C:\\Users\\Roberto Echeverria\\Downloads\\FANTASY CODE copy\\FANTASY CODE copy\\videos\\Ja_Marr_Chase.mp4",
+    "Ja'Marr Chase": "videos/Ja_Marr_Chase.mp4",
     "Ja'Tavion Sanders": 'videos/Ja_Tavion_Sanders.mp4',
     'JaMycal Hasty': 'videos/JaMycal_Hasty.mp4',
     'Jack Fox': 'videos/Jack_Fox.mp4',
